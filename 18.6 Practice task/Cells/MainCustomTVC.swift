@@ -10,10 +10,9 @@ import UIKit
 class MainCustomTVC: UITableViewCell {
     
     static let identifier = "MyCusomCell"
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.backgroundColor = .blue
     }
     
     required init?(coder: NSCoder) {

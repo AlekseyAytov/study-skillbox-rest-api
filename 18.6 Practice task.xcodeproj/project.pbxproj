@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B564E2929F982740070A1B9 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B564E2829F982740070A1B9 /* Model.swift */; };
+		6B564E2B29F982C20070A1B9 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B564E2A29F982C20070A1B9 /* Service.swift */; };
 		6BE6482329F6B30700842160 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE6482229F6B30700842160 /* AppDelegate.swift */; };
 		6BE6482529F6B30700842160 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE6482429F6B30700842160 /* SceneDelegate.swift */; };
 		6BE6482729F6B30700842160 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE6482629F6B30700842160 /* ViewController.swift */; };
@@ -21,6 +23,9 @@
 		00F25087C76BDDEB062213C0 /* Pods-18.6 Practice task.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-18.6 Practice task.release.xcconfig"; path = "Target Support Files/Pods-18.6 Practice task/Pods-18.6 Practice task.release.xcconfig"; sourceTree = "<group>"; };
 		3F0CA7ABF29C4D3ECE10483C /* Pods-18.6 Practice task.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-18.6 Practice task.debug.xcconfig"; path = "Target Support Files/Pods-18.6 Practice task/Pods-18.6 Practice task.debug.xcconfig"; sourceTree = "<group>"; };
 		605ABCCAC0904A79B7FA4C69 /* Pods_18_6_Practice_task.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_18_6_Practice_task.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B564E2729F7BDC20070A1B9 /* testREST.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = testREST.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		6B564E2829F982740070A1B9 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		6B564E2A29F982C20070A1B9 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		6BE6481F29F6B30700842160 /* 18.6 Practice task.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "18.6 Practice task.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BE6482229F6B30700842160 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6BE6482429F6B30700842160 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -79,6 +84,9 @@
 				6BE6482629F6B30700842160 /* ViewController.swift */,
 				6BE6482829F6B30700842160 /* Main.storyboard */,
 				6BE6483029F6B30E00842160 /* Info.plist */,
+				6B564E2729F7BDC20070A1B9 /* testREST.playground */,
+				6B564E2829F982740070A1B9 /* Model.swift */,
+				6B564E2A29F982C20070A1B9 /* Service.swift */,
 			);
 			path = "18.6 Practice task";
 			sourceTree = "<group>";
@@ -225,10 +233,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B564E2929F982740070A1B9 /* Model.swift in Sources */,
 				6BE6482729F6B30700842160 /* ViewController.swift in Sources */,
 				6BE6482329F6B30700842160 /* AppDelegate.swift in Sources */,
 				6BE6482529F6B30700842160 /* SceneDelegate.swift in Sources */,
 				6BE6483929F6B5AB00842160 /* MainCustomTVC.swift in Sources */,
+				6B564E2B29F982C20070A1B9 /* Service.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

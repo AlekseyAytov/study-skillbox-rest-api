@@ -8,6 +8,11 @@
 import SnapKit
 
 class ViewController: UIViewController {
+    private let service = Service()
+    
+    private var searchResults: [ResultForDisplay] = []
+    
+    private var imagesCache: [IndexPath: UIImage] = [:]
     
     private lazy var mainTableView: UITableView = {
         let table = UITableView()
@@ -76,12 +81,44 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        5
+        searchResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reuseCell = tableView.dequeueReusableCell(withIdentifier: MainCustomTVC.identifier) as! MainCustomTVC
+        var reuseCell = tableView.dequeueReusableCell(withIdentifier: MainCustomTVC.identifier) as! MainCustomTVC
+        configure(cell: &reuseCell, for: indexPath)
         return reuseCell
+    }
+    
+    private func configure(cell: inout MainCustomTVC, for indexPath: IndexPath) {
+        if searchResults.isEmpty {
+            return
+        } else {
+            var configuration = cell.defaultContentConfiguration()
+            configuration.text = "\(searchResults[indexPath.row].title)"
+            configuration.secondaryText = "\(searchResults[indexPath.row].description)"
+            
+            if let image = imagesCache[indexPath] {
+                configuration.image = image
+            } else {
+                print("run service.loadImageAsync - \(indexPath)")
+                service.loadImageAsync(urlString: searchResults[indexPath.row].image) {imageData in
+                    if let imageData = imageData {
+                        self.imagesCache[indexPath] = UIImage(data: imageData)!.scalePreservingAspectRatio(targetSize: CGSize(width: 100, height: 100))
+                        DispatchQueue.main.async {
+                            self.mainTableView.reloadRows(at: [indexPath], with: .none)
+                            print("ended service.loadImageAsync - \(indexPath)")
+                        }
+                    }
+                }
+            }
+            
+            var imageProperties = configuration.imageProperties
+            imageProperties.maximumSize = CGSize(width: 100, height: 100)
+            configuration.imageProperties = imageProperties
+            
+            cell.contentConfiguration = configuration
+        }
     }
 }
 
@@ -94,6 +131,15 @@ extension ViewController: UISearchBarDelegate {
         mainSearchBar.searchTextField.leftView?.isHidden = true
         searchBar.resignFirstResponder()
         
+        service.getSearchResults(searchExpression: searchBar.text) { jsonData, error in
+            guard let data = jsonData else { return }
+            self.searchResults = Array(self.service.parseDecoder(data: data).results.map{ResultForDisplay(networkModel: $0)})
+            DispatchQueue.main.async {
+                self.mainTableView.reloadData()
+                self.activityIndicator.stopAnimating()
+                self.mainSearchBar.searchTextField.leftView?.isHidden = false
+            }
+        }
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -107,5 +153,36 @@ extension ViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = true
+    }
+}
+
+
+extension UIImage {
+    func scalePreservingAspectRatio(targetSize: CGSize) -> UIImage {
+        // Determine the scale factor that preserves aspect ratio
+        let widthRatio = targetSize.width / size.width
+        let heightRatio = targetSize.height / size.height
+        
+        let scaleFactor = min(widthRatio, heightRatio)
+        
+        // Compute the new image size that preserves aspect ratio
+        let scaledImageSize = CGSize(
+            width: size.width * scaleFactor,
+            height: size.height * scaleFactor
+        )
+
+        // Draw and return the resized UIImage
+        let renderer = UIGraphicsImageRenderer(
+            size: scaledImageSize
+        )
+
+        let scaledImage = renderer.image { _ in
+            self.draw(in: CGRect(
+                origin: .zero,
+                size: scaledImageSize
+            ))
+        }
+        
+        return scaledImage
     }
 }
