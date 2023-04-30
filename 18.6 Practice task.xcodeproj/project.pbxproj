@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B17415429FF016A008553B0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B17415329FF016A008553B0 /* Constants.swift */; };
 		6B564E2929F982740070A1B9 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B564E2829F982740070A1B9 /* Model.swift */; };
 		6B564E2B29F982C20070A1B9 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B564E2A29F982C20070A1B9 /* Service.swift */; };
 		6BE6482329F6B30700842160 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE6482229F6B30700842160 /* AppDelegate.swift */; };
@@ -15,7 +16,6 @@
 		6BE6482A29F6B30700842160 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6482829F6B30700842160 /* Main.storyboard */; };
 		6BE6482C29F6B30E00842160 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6482B29F6B30E00842160 /* Assets.xcassets */; };
 		6BE6482F29F6B30E00842160 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6482D29F6B30E00842160 /* LaunchScreen.storyboard */; };
-		6BE6483929F6B5AB00842160 /* MainCustomTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE6483829F6B5AB00842160 /* MainCustomTVC.swift */; };
 		CCDB214AD1115ADE59F30D26 /* Pods_18_6_Practice_task.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 605ABCCAC0904A79B7FA4C69 /* Pods_18_6_Practice_task.framework */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +23,7 @@
 		00F25087C76BDDEB062213C0 /* Pods-18.6 Practice task.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-18.6 Practice task.release.xcconfig"; path = "Target Support Files/Pods-18.6 Practice task/Pods-18.6 Practice task.release.xcconfig"; sourceTree = "<group>"; };
 		3F0CA7ABF29C4D3ECE10483C /* Pods-18.6 Practice task.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-18.6 Practice task.debug.xcconfig"; path = "Target Support Files/Pods-18.6 Practice task/Pods-18.6 Practice task.debug.xcconfig"; sourceTree = "<group>"; };
 		605ABCCAC0904A79B7FA4C69 /* Pods_18_6_Practice_task.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_18_6_Practice_task.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B17415329FF016A008553B0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		6B564E2729F7BDC20070A1B9 /* testREST.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = testREST.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		6B564E2829F982740070A1B9 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		6B564E2A29F982C20070A1B9 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
@@ -34,7 +35,6 @@
 		6BE6482B29F6B30E00842160 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6BE6482E29F6B30E00842160 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6BE6483029F6B30E00842160 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6BE6483829F6B5AB00842160 /* MainCustomTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCustomTVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,12 +79,10 @@
 		6BE6482129F6B30700842160 /* 18.6 Practice task */ = {
 			isa = PBXGroup;
 			children = (
-				6BE6483729F6B54C00842160 /* Cells */,
 				6BE6483629F6B4FC00842160 /* Supporting Files */,
 				6BE6482629F6B30700842160 /* ViewController.swift */,
 				6BE6482829F6B30700842160 /* Main.storyboard */,
 				6BE6483029F6B30E00842160 /* Info.plist */,
-				6B564E2729F7BDC20070A1B9 /* testREST.playground */,
 				6B564E2829F982740070A1B9 /* Model.swift */,
 				6B564E2A29F982C20070A1B9 /* Service.swift */,
 			);
@@ -94,20 +92,14 @@
 		6BE6483629F6B4FC00842160 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6B564E2729F7BDC20070A1B9 /* testREST.playground */,
 				6BE6482429F6B30700842160 /* SceneDelegate.swift */,
 				6BE6482229F6B30700842160 /* AppDelegate.swift */,
 				6BE6482B29F6B30E00842160 /* Assets.xcassets */,
 				6BE6482D29F6B30E00842160 /* LaunchScreen.storyboard */,
+				6B17415329FF016A008553B0 /* Constants.swift */,
 			);
 			path = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		6BE6483729F6B54C00842160 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				6BE6483829F6B5AB00842160 /* MainCustomTVC.swift */,
-			);
-			path = Cells;
 			sourceTree = "<group>";
 		};
 		E7E5C4AE10C7BDEFF369C088 /* Frameworks */ = {
@@ -237,8 +229,8 @@
 				6BE6482729F6B30700842160 /* ViewController.swift in Sources */,
 				6BE6482329F6B30700842160 /* AppDelegate.swift in Sources */,
 				6BE6482529F6B30700842160 /* SceneDelegate.swift in Sources */,
-				6BE6483929F6B5AB00842160 /* MainCustomTVC.swift in Sources */,
 				6B564E2B29F982C20070A1B9 /* Service.swift in Sources */,
+				6B17415429FF016A008553B0 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

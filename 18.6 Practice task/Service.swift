@@ -9,34 +9,29 @@ import UIKit
 
 class Service {
     
-    private var url = URL(string: "https://imdb-api.com/API/Search/k_ngzy512q")!
-
-    func loadImage(urlString: String) -> UIImage? {
-        guard
-            let url = URL(string: urlString),
-            let data = try? Data(contentsOf: url)
-        else {
-            print("Ошибка, не удалось загрузить изображение")
-            return nil
-        }
-
-        return UIImage(data: data)
-    }
+    private var urlString = "https://imdb-api.com/API/Search/k_ngzy512q/"
     
+    // сервис загрузки картинки по url
     func loadImageAsync(urlString: String, completion: @escaping (Data?) -> Void) {
-        guard let url = URL(string: urlString) else { return }
+        guard let url = URL(string: urlString) else {
+            completion(nil)
+            return
+        }
+        
         DispatchQueue.global(qos: .userInitiated).async {
             guard let contentOfURL = try? Data(contentsOf: url) else {
                 print("Ошибка, не удалось загрузить изображение")
+                completion(nil)
                 return
             }
             completion(contentOfURL)
         }
     }
-
+    
+    // сервис API запроса
     func getSearchResults(searchExpression: String?, completion: @escaping (Data?, Error?) -> Void) {
-        guard let searchExpression = searchExpression else { return }
-        url.append(path: searchExpression)
+        guard let searchExpression = searchExpression,
+              let url = URL(string: urlString + searchExpression) else { return }
         let task = URLSession.shared.dataTask(with: url) { (data, _, error) in
             guard let data = data else {
                 completion(nil, error)
@@ -44,11 +39,17 @@ class Service {
             }
             completion(data, nil)
         }
+        
+        print("Запрос с параметром - \(searchExpression)")
         task.resume()
     }
     
-    func parseDecoder(data: Data) -> SearchResults {
-        let decode = try! JSONDecoder().decode(SearchResults.self, from: data)
+    // сервис декодирования JSON в network model
+    func parseDecoder(data: Data) -> SearchResults? {
+        guard let decode = try? JSONDecoder().decode(SearchResults.self, from: data) else {
+            print("Ошибка декодирования - \(data)")
+            return nil
+        }
         return decode
     }
 }

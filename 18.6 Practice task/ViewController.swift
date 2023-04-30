@@ -10,27 +10,30 @@ import SnapKit
 class ViewController: UIViewController {
     private let service = Service()
     
+    // результаты поиска
     private var searchResults: [ResultForDisplay] = []
     
+    // словарь для хранения изображений с измененными размерами
     private var imagesCache: [IndexPath: UIImage] = [:]
+    
+    private var reuseCellIdentifier = "standartCell"
     
     private lazy var mainTableView: UITableView = {
         let table = UITableView()
         table.dataSource = self
-        table.backgroundColor = .gray
         return table
     }()
     
     private lazy var mainSearchBar: UISearchBar  = {
         let searchBar = UISearchBar()
         searchBar.delegate = self
-        searchBar.placeholder = "введите запрос..."
+        searchBar.placeholder = Constants.Titles.placeholder
         return searchBar
     }()
     
     private lazy var aboutInfo: UILabel = {
         let label = UILabel()
-        label.text = "Cервис для получения информации о фильмах, сериалах и актерском составе"
+        label.text = Constants.Titles.info
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -73,7 +76,6 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        mainTableView.register(MainCustomTVC.self, forCellReuseIdentifier: MainCustomTVC.identifier)
         setupViews()
         setupConstraints()
     }
@@ -85,12 +87,12 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var reuseCell = tableView.dequeueReusableCell(withIdentifier: MainCustomTVC.identifier) as! MainCustomTVC
+        var reuseCell = tableView.dequeueReusableCell(withIdentifier: reuseCellIdentifier) ?? UITableViewCell()
         configure(cell: &reuseCell, for: indexPath)
         return reuseCell
     }
     
-    private func configure(cell: inout MainCustomTVC, for indexPath: IndexPath) {
+    private func configure(cell: inout UITableViewCell, for indexPath: IndexPath) {
         if searchResults.isEmpty {
             return
         } else {
@@ -101,18 +103,27 @@ extension ViewController: UITableViewDataSource {
             if let image = imagesCache[indexPath] {
                 configuration.image = image
             } else {
+                // если изображения для текущего indexPath в словаре imagesCache нет, то загружаем изображение
                 print("run service.loadImageAsync - \(indexPath)")
                 service.loadImageAsync(urlString: searchResults[indexPath.row].image) {imageData in
+                    
                     if let imageData = imageData {
+                        // если загрузка изображения произошла, то заносим в словарь
                         self.imagesCache[indexPath] = UIImage(data: imageData)!.scalePreservingAspectRatio(targetSize: CGSize(width: 100, height: 100))
-                        DispatchQueue.main.async {
-                            self.mainTableView.reloadRows(at: [indexPath], with: .none)
-                            print("ended service.loadImageAsync - \(indexPath)")
-                        }
+                    } else {
+                        // если загрузка изображения НЕ произошла, то заносим в словарь No-Image-Placeholder
+                        self.imagesCache[indexPath] = UIImage(named: "No-Image-Placeholder")
+                    }
+                    
+                    DispatchQueue.main.async {
+                        // для отображения изображения перезагружаем ячейку
+                        self.mainTableView.reloadRows(at: [indexPath], with: .none)
+                        print("ended service.loadImageAsync - \(indexPath)")
                     }
                 }
             }
             
+            // установка максимального размера картинки в ячейке
             var imageProperties = configuration.imageProperties
             imageProperties.maximumSize = CGSize(width: 100, height: 100)
             configuration.imageProperties = imageProperties
@@ -128,12 +139,21 @@ extension ViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         print("searchBarSearchButtonClicked")
         activityIndicator.startAnimating()
+        // прячем левую вью searchTextField для отображения activityIndicator
         mainSearchBar.searchTextField.leftView?.isHidden = true
+        // скрываем клавиатуру после нажатия
         searchBar.resignFirstResponder()
         
+        // Обнуляем результаты предыдущего запроса
+        searchResults = []
+        imagesCache = [:]
+        
         service.getSearchResults(searchExpression: searchBar.text) { jsonData, error in
-            guard let data = jsonData else { return }
-            self.searchResults = Array(self.service.parseDecoder(data: data).results.map{ResultForDisplay(networkModel: $0)})
+            guard let data = jsonData,
+                  let networkModel = self.service.parseDecoder(data: data) else { return }
+            // преобразование networkModel в массив структур ResultForDisplay
+            self.searchResults = Array(networkModel.results.map{ResultForDisplay(networkModel: $0)})
+            
             DispatchQueue.main.async {
                 self.mainTableView.reloadData()
                 self.activityIndicator.stopAnimating()
@@ -145,7 +165,7 @@ extension ViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         print("searchBarCancelButtonClicked")
         searchBar.showsCancelButton = false
-        searchBar.text = ""
+        searchBar.text = nil
         activityIndicator.stopAnimating()
         mainSearchBar.searchTextField.leftView?.isHidden = false
         searchBar.resignFirstResponder()
@@ -156,7 +176,7 @@ extension ViewController: UISearchBarDelegate {
     }
 }
 
-
+// расширения класса UIImage для изменения размера
 extension UIImage {
     func scalePreservingAspectRatio(targetSize: CGSize) -> UIImage {
         // Determine the scale factor that preserves aspect ratio
